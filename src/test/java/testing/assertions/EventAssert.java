@@ -4,7 +4,7 @@ import domain.model.Attendee;
 import domain.model.Event;
 import org.assertj.core.api.AbstractAssert;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 public class EventAssert extends AbstractAssert<EventAssert, Event> {
 
@@ -28,7 +28,7 @@ public class EventAssert extends AbstractAssert<EventAssert, Event> {
         return this;
     }
 
-    public EventAssert isHeldAtDate(LocalDateTime date) {
+    public EventAssert isHeldAtDate(LocalDate date) {
         isNotNull();
         if (!actual.date().equals(date)) {
             failWithMessage("Expected date to be <%s> but was <%s>", date, actual.date());

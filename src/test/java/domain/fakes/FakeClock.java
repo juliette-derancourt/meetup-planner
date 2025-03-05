@@ -2,18 +2,18 @@ package domain.fakes;
 
 import domain.spi.Clock;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 public class FakeClock implements Clock {
 
-    private LocalDateTime date = LocalDateTime.MIN;
+    private LocalDate date = LocalDate.MIN;
 
     @Override
-    public LocalDateTime now() {
+    public LocalDate today() {
         return date;
     }
 
-    public void setDate(LocalDateTime date) {
+    public void setDate(LocalDate date) {
         this.date = date;
     }
 

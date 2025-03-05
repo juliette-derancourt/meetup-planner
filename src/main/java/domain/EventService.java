@@ -10,7 +10,7 @@ import domain.spi.Clock;
 import domain.spi.EventRepository;
 import domain.spi.UserAuthorizationProvider;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.UUID;
@@ -33,7 +33,7 @@ public class EventService implements MeetupCalendar, EventPlanner, EventRegistra
     }
 
     @Override
-    public UUID planEvent(String name, LocalDateTime date, int venueCapacity, UUID userId) {
+    public UUID planEvent(String name, LocalDate date, int venueCapacity, UUID userId) {
         if (!authorizationProvider.isOrganizer(userId)) {
             throw new UnauthorizedActionException("plan an event");
         }

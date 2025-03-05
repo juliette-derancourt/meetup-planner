@@ -1,11 +1,11 @@
 package domain.api;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.UUID;
 
 @FunctionalInterface
 public interface EventPlanner {
 
-    UUID planEvent(String name, LocalDateTime date, int venueCapacity, UUID organizerId);
+    UUID planEvent(String name, LocalDate date, int venueCapacity, UUID organizerId);
 
 }

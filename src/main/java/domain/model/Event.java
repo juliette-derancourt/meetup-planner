@@ -3,12 +3,12 @@ package domain.model;
 import domain.model.exceptions.EventIsOverException;
 import domain.spi.Clock;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.UUID;
 
-public record Event(UUID id, String name, LocalDateTime date, Registrations registrations) {
+public record Event(UUID id, String name, LocalDate date, Registrations registrations) {
 
-    public static Event create(String name, LocalDateTime date, int venueCapacity) {
+    public static Event create(String name, LocalDate date, int venueCapacity) {
         if (venueCapacity <= 0) {
             throw new IllegalArgumentException("Venue capacity must be greater than zero");
         }
@@ -16,7 +16,7 @@ public record Event(UUID id, String name, LocalDateTime date, Registrations regi
     }
 
     public void register(Attendee attendee, Clock clock) {
-        if (clock.now().isAfter(date)) {
+        if (clock.today().isAfter(date)) {
             throw new EventIsOverException();
         }
         registrations.add(attendee);

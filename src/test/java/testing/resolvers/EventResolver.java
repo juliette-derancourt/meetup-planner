@@ -12,7 +12,7 @@ import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
@@ -26,7 +26,7 @@ public class EventResolver extends TypeBasedParameterResolver<Event> {
 
         return Event.create(
                 "A great event",
-                LocalDateTime.of(2024, 3, 2, 12, 0),
+                LocalDate.of(2025, 3, 2),
                 10
         );
     }
@@ -35,7 +35,7 @@ public class EventResolver extends TypeBasedParameterResolver<Event> {
         return new Event(
                 UUID.fromString("182754a6-939b-41a2-a610-2470c01d755b"),
                 "A full event",
-                LocalDateTime.of(2024, 2, 2, 12, 0),
+                LocalDate.of(2025, 2, 2),
                 new Registrations(
                         2,
                         List.of(
@@ -48,6 +48,7 @@ public class EventResolver extends TypeBasedParameterResolver<Event> {
     @Target(ElementType.PARAMETER)
     @Retention(RetentionPolicy.RUNTIME)
     public @interface Full {
+
     }
 
 }

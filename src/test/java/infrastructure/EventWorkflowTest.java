@@ -8,7 +8,7 @@ import testing.WorkflowTest;
 import testing.dsl.TestDataFactory;
 import testing.dsl.UserInterface;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.UUID;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -21,7 +21,7 @@ class EventWorkflowTest {
     private UserInterface userInterface;
 
     private String eventId;
-    private final LocalDateTime tomorrow = LocalDateTime.now().plusDays(1);
+    private final LocalDate tomorrow = LocalDate.now().plusDays(1);
 
     @Test
     @Order(1)
@@ -57,7 +57,7 @@ class EventWorkflowTest {
                                 }
                             ]
                         }
-                        """.formatted(tomorrow.toString()), true));
+                        """.formatted(tomorrow), true));
     }
 
     @Test

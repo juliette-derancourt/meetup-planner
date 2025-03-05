@@ -8,7 +8,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -21,7 +21,7 @@ public class EventEntity {
 
     private String name;
 
-    private LocalDateTime date;
+    private LocalDate date;
 
     private int venueCapacity;
 
@@ -31,7 +31,7 @@ public class EventEntity {
     public EventEntity() {
     }
 
-    private EventEntity(UUID id, String name, LocalDateTime date, int venueCapacity, List<AttendeeEntity> attendees) {
+    private EventEntity(UUID id, String name, LocalDate date, int venueCapacity, List<AttendeeEntity> attendees) {
         this.id = id;
         this.name = name;
         this.date = date;
