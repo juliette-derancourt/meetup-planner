@@ -21,6 +21,7 @@ class EventWorkflowTest {
     private UserInterface userInterface;
 
     private String eventId;
+    private final LocalDateTime tomorrow = LocalDateTime.now().plusDays(1);
 
     @Test
     @Order(1)
@@ -34,7 +35,7 @@ class EventWorkflowTest {
     void an_organizer_plans_an_event(TestDataFactory testDataFactory) throws Exception {
         UUID organizerId = testDataFactory.givenAnOrganizer("ee8b1e44-b0e1-4cc0-9d6e-b24ce343111e");
 
-        EventRequestBody event = new EventRequestBody("An event", LocalDateTime.parse("2024-10-20T10:20:20"), 1);
+        EventRequestBody event = new EventRequestBody("An event", tomorrow, 1);
 
         eventId = userInterface.planAnEvent(event, organizerId)
                 .andReturn()
@@ -51,12 +52,12 @@ class EventWorkflowTest {
                             "events": [
                                 {
                                     "name": "An event",
-                                    "date": "2024-10-20T10:20:20",
+                                    "date": "%s",
                                     "attendees": 0
                                 }
                             ]
                         }
-                        """, true));
+                        """.formatted(tomorrow.toString()), true));
     }
 
     @Test
