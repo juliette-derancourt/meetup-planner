@@ -1,6 +1,7 @@
 package infrastructure.rest.dto;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
-public record EventRequestBody(String name, LocalDateTime date, int venueCapacity) {
+public record EventRequestBody(String name, LocalDate date, int venueCapacity) {
+
 }

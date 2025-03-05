@@ -2,7 +2,8 @@ name: Run tests
 
 on:
   push:
-    branches: [ "main" ]
+    branches:
+      - '**'
 
 jobs:
   test:
@@ -15,5 +16,6 @@ jobs:
         with:
           java-version: '21'
           distribution: 'temurin'
+          cache: maven
       - name: Maven verify
         run: mvn verify

@@ -20,7 +20,7 @@ import testing.dsl.UserInterface;
 import testing.resolvers.EventResolver;
 import testing.resolvers.UserInterfaceExtension;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
@@ -58,7 +58,7 @@ class EventControllerTest {
         String eventId = "477739f1-5a76-486f-bdd7-9144aee9b36f";
         when(eventService.planEvent(any(), any(), anyInt(), any())).thenReturn(UUID.fromString(eventId));
 
-        EventRequestBody event = new EventRequestBody("An event", LocalDateTime.parse("2020-10-20T10:20:20"), 1);
+        EventRequestBody event = new EventRequestBody("An event", LocalDate.parse("2020-10-20"), 1);
 
         userInterface.planAnEvent(event, UUID.randomUUID())
                 .andExpect(status().isCreated())

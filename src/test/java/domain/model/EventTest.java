@@ -13,7 +13,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 import testing.resolvers.AttendeeResolver;
 import testing.resolvers.EventResolver;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static testing.assertions.Assertions.assertThat;
@@ -27,7 +27,7 @@ class EventTest {
 
     @Test
     void should_create_an_event() {
-        LocalDateTime date = LocalDateTime.of(2024, 2, 1, 20, 0);
+        LocalDate date = LocalDate.of(2025, 2, 1);
         Event event = Event.create("Event name", date, 10);
 
         assertThat(event).hasAnId()
@@ -39,7 +39,7 @@ class EventTest {
     @ParameterizedTest
     @ValueSource(ints = {-10, 0})
     void should_not_create_an_event_with_no_capacity(int venueCapacity) {
-        LocalDateTime date = LocalDateTime.of(2024, 2, 1, 20, 0);
+        LocalDate date = LocalDate.of(2025, 2, 1);
 
         assertThatExceptionOfType(IllegalArgumentException.class)
                 .isThrownBy(() -> Event.create("Event name", date, venueCapacity))
@@ -51,7 +51,7 @@ class EventTest {
 
         @BeforeEach
         void setUp() {
-            clock.setDate(LocalDateTime.MIN);
+            clock.setDate(LocalDate.MIN);
         }
 
         @Test
@@ -83,7 +83,7 @@ class EventTest {
 
         @BeforeEach
         void setUp() {
-            clock.setDate(LocalDateTime.MAX);
+            clock.setDate(LocalDate.MAX);
         }
 
         @Test

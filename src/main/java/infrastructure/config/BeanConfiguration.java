@@ -7,7 +7,7 @@ import domain.spi.UserAuthorizationProvider;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Configuration
 public class BeanConfiguration {
@@ -19,7 +19,7 @@ public class BeanConfiguration {
 
     @Bean
     Clock clock() {
-        return LocalDateTime::now;
+        return LocalDate::now;
     }
 
 }

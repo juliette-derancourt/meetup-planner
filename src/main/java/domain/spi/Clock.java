@@ -1,10 +1,10 @@
 package domain.spi;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @FunctionalInterface
 public interface Clock {
 
-    LocalDateTime now();
+    LocalDate today();
 
 }

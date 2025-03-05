@@ -9,7 +9,7 @@ import infrastructure.persistence.InMemoryEventRepository;
 import org.junit.jupiter.api.Test;
 import testing.assertions.EventAssert;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
@@ -27,7 +27,7 @@ class EventPlannerTest {
         UUID organizerId = UUID.fromString("02056bba-9ca0-4fb5-8287-59ee980e8644");
         authorizationProvider.addOrganizer(organizerId);
 
-        LocalDateTime date = LocalDateTime.of(2024, 6, 12, 19, 0);
+        LocalDate date = LocalDate.of(2025, 6, 12);
         eventPlanner.planEvent("An event", date, 50, organizerId);
 
         List<Event> events = eventRepository.findAll();
@@ -41,7 +41,7 @@ class EventPlannerTest {
 
     @Test
     void only_organizers_are_able_to_plan_an_event() {
-        LocalDateTime date = LocalDateTime.of(2024, 6, 12, 19, 0);
+        LocalDate date = LocalDate.of(2025, 6, 12);
 
         assertThatExceptionOfType(UnauthorizedActionException.class)
                 .isThrownBy(() -> eventPlanner.planEvent("An event", date, 50, UUID.randomUUID()))
