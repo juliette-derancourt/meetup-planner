@@ -57,7 +57,7 @@ class EventWorkflowTest {
                                 }
                             ]
                         }
-                        """.formatted(tomorrow), true));
+                        """.formatted(tomorrow)));
     }
 
     @Test

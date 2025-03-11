@@ -15,7 +15,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import testing.dsl.UserInterface;
 import testing.resolvers.EventResolver;
 import testing.resolvers.UserInterfaceExtension;
@@ -37,7 +37,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ExtendWith({UserInterfaceExtension.class, EventResolver.class})
 class EventControllerTest {
 
-    @MockBean
+    @MockitoBean
     private EventService eventService;
 
     private UserInterface userInterface;
