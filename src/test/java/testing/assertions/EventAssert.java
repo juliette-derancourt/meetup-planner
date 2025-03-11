@@ -6,6 +6,12 @@ import org.assertj.core.api.AbstractAssert;
 
 import java.time.LocalDate;
 
+/**
+ * Custom assertion specific to Event
+ *
+ * @see <a href="https://assertj.github.io/doc/#assertj-core-custom-assertions">AssertJ docs</a>
+ */
+@SuppressWarnings("UnusedReturnValue")
 public class EventAssert extends AbstractAssert<EventAssert, Event> {
 
     public EventAssert(Event event) {
