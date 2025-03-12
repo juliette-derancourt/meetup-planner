@@ -8,9 +8,8 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import testing.dsl.RestApi;
 import testing.dsl.TestDataFactory;
-import testing.dsl.RestApi;
-import testing.extensions.TestDataFactoryExtension;
 import testing.extensions.RestApiExtension;
+import testing.extensions.TestDataFactoryExtension;
 
 import java.time.LocalDate;
 import java.util.UUID;
