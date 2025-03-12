@@ -19,9 +19,9 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
-import testing.dsl.RestApi;
 import testing.extensions.EventResolver;
 
 import java.time.LocalDate;
@@ -33,6 +33,9 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -51,19 +54,12 @@ class EventControllerTest {
     @Autowired
     private ObjectMapper objectMapper;
 
-    RestApi api;
-
-    @BeforeEach
-    void setUp() {
-        api = new RestApi(mockMvc, objectMapper);
-    }
-
     @Test
     @DisplayName("should return nothing when there is no event planned")
     void should_return_no_events() throws Exception {
         when(eventService.listEvents()).thenReturn(List.of());
 
-        api.consultEventCalendar()
+        mockMvc.perform(get("/events"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.events").isEmpty());
     }
@@ -76,7 +72,10 @@ class EventControllerTest {
 
         EventRequestBody event = new EventRequestBody("An event", LocalDate.parse("2020-10-20"), 1);
 
-        api.planAnEvent(event, UUID.randomUUID())
+        mockMvc.perform(post("/events")
+                        .header("user-id", UUID.randomUUID())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(event)))
                 .andExpect(status().isCreated())
                 .andExpect(content().string(eventId));
     }
@@ -96,7 +95,7 @@ class EventControllerTest {
         @Test
         @DisplayName("should return the event")
         void should_return_event() throws Exception {
-            String response = api.consultEventCalendar()
+            String response = mockMvc.perform(get("/events"))
                     .andExpect(status().isOk())
                     .andReturn()
                     .getResponse().getContentAsString();
@@ -108,7 +107,9 @@ class EventControllerTest {
         @DisplayName("should be able to register to the event")
         void should_register_to_event() throws Exception {
             AttendeeRequestBody attendee = new AttendeeRequestBody("Amy", "amy@email.com");
-            api.registerToEvent(eventId, attendee)
+            mockMvc.perform(patch("/events/{id}/register", eventId)
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(objectMapper.writeValueAsString(attendee)))
                     .andExpect(status().isOk());
         }
 
@@ -123,7 +124,9 @@ class EventControllerTest {
             doThrow(exception).when(eventService).registerTo(any(), any(), any());
 
             AttendeeRequestBody attendee = new AttendeeRequestBody("Amy", "amy@email.com");
-            api.registerToEvent(eventId, attendee)
+            mockMvc.perform(patch("/events/{id}/register", eventId)
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(objectMapper.writeValueAsString(attendee)))
                     .andExpect(status().isBadRequest());
         }
 
