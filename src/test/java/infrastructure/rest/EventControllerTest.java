@@ -43,7 +43,7 @@ class EventControllerTest {
     @MockitoBean
     private EventService eventService;
 
-    private UserInterface userInterface;
+    UserInterface userInterface;
 
     @Test
     @DisplayName("should return nothing when there is no event planned")

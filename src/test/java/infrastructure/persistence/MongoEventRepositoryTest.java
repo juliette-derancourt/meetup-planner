@@ -2,11 +2,11 @@ package infrastructure.persistence;
 
 import domain.spi.EventRepository;
 
-public class InMemoryEventRepositoryTest implements EventRepositoryTest {
+public class MongoEventRepositoryTest implements EventRepositoryTest {
 
     @Override
     public EventRepository provideRepositoryImplementation() {
-        return new InMemoryEventRepository();
+        return new MongoEventRepository();
     }
 
 }

@@ -5,14 +5,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 @DataJpaTest
-class PersistedEventRepositoryTest implements EventRepositoryTest {
+class PostgresEventRepositoryTest implements EventRepositoryTest {
 
     @Autowired
     private JpaEventRepository jpaRepository;
 
     @Override
     public EventRepository provideRepositoryImplementation() {
-        return new PersistedEventRepository(jpaRepository);
+        return new PostgresEventRepository(jpaRepository);
     }
 
 }

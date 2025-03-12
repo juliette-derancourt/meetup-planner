@@ -5,7 +5,7 @@ import domain.fakes.FakeClock;
 import domain.model.Event;
 import domain.model.exceptions.UnauthorizedActionException;
 import infrastructure.auth.SimpleAuthorizationProvider;
-import infrastructure.persistence.InMemoryEventRepository;
+import infrastructure.persistence.MongoEventRepository;
 import org.junit.jupiter.api.Test;
 import testing.assertions.EventAssert;
 
@@ -18,7 +18,7 @@ import static testing.assertions.Assertions.assertThat;
 
 class EventPlannerTest {
 
-    private final InMemoryEventRepository eventRepository = new InMemoryEventRepository();
+    private final MongoEventRepository eventRepository = new MongoEventRepository();
     private final SimpleAuthorizationProvider authorizationProvider = new SimpleAuthorizationProvider();
     private final EventPlanner eventPlanner = new EventService(eventRepository, authorizationProvider, new FakeClock());
 

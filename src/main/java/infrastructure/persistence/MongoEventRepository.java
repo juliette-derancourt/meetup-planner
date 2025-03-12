@@ -9,7 +9,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
-public class InMemoryEventRepository implements EventRepository {
+public class MongoEventRepository implements EventRepository {
 
     private final Map<UUID, Event> events = new HashMap<>();
 

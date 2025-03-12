@@ -11,11 +11,11 @@ import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 @Repository
-public class PersistedEventRepository implements EventRepository {
+public class PostgresEventRepository implements EventRepository {
 
     private final JpaEventRepository repository;
 
-    public PersistedEventRepository(JpaEventRepository repository) {
+    public PostgresEventRepository(JpaEventRepository repository) {
         this.repository = repository;
     }
 

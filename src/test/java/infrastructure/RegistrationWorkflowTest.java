@@ -18,7 +18,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WorkflowTest
 class RegistrationWorkflowTest {
 
-    private UserInterface userInterface;
+    UserInterface userInterface;
 
     private String eventId;
     private final LocalDate tomorrow = LocalDate.now().plusDays(1);
