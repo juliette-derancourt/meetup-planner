@@ -16,7 +16,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WorkflowTest
-class EventWorkflowTest {
+class RegistrationWorkflowTest {
 
     private UserInterface userInterface;
 
