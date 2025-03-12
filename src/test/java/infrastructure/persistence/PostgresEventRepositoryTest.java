@@ -2,17 +2,17 @@ package infrastructure.persistence;
 
 import domain.spi.EventRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.context.SpringBootTest;
 
-@DataJpaTest
+@SpringBootTest
 class PostgresEventRepositoryTest implements EventRepositoryTest {
 
     @Autowired
-    private JpaEventRepository jpaRepository;
+    private PostgresEventRepository eventRepository;
 
     @Override
     public EventRepository provideRepositoryImplementation() {
-        return new PostgresEventRepository(jpaRepository);
+        return eventRepository;
     }
 
 }
