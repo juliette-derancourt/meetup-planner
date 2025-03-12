@@ -16,8 +16,10 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 import testing.extensions.EventResolver;
@@ -26,7 +28,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
-import static org.approvaltests.JsonApprovals.verifyJson;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.doThrow;
@@ -34,11 +36,10 @@ import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest(EventController.class)
+@SpringBootTest
+@AutoConfigureMockMvc
 @ExtendWith({EventResolver.class})
 class EventControllerTest {
 
@@ -56,9 +57,12 @@ class EventControllerTest {
     void should_return_no_events() throws Exception {
         when(eventService.listEvents()).thenReturn(List.of());
 
-        mockMvc.perform(get("/events"))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.events").isEmpty());
+        MockHttpServletResponse response = mockMvc.perform(get("/events"))
+                .andReturn()
+                .getResponse();
+
+        assertEquals(200, response.getStatus());
+        assertEquals("{\"events\":[]}", response.getContentAsString());
     }
 
     @Test
@@ -69,12 +73,16 @@ class EventControllerTest {
 
         EventRequestBody event = new EventRequestBody("An event", LocalDate.parse("2020-10-20"), 1);
 
-        mockMvc.perform(post("/events")
+        String response = mockMvc.perform(post("/events")
                         .header("user-id", UUID.randomUUID())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(event)))
                 .andExpect(status().isCreated())
-                .andExpect(content().string(eventId));
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
+
+        assertEquals(eventId, response);
     }
 
     @Nested
@@ -97,7 +105,10 @@ class EventControllerTest {
                     .andReturn()
                     .getResponse().getContentAsString();
 
-            verifyJson(response);
+            String expected = """
+                    {"events":[{"name":"A great event","date":"2025-03-02","attendees":0}]}""";
+
+            assertEquals(expected, response);
         }
 
         @Test
