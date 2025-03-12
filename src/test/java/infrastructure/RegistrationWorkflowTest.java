@@ -2,11 +2,18 @@ package infrastructure;
 
 import infrastructure.rest.dto.AttendeeRequestBody;
 import infrastructure.rest.dto.EventRequestBody;
+import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
-import testing.WorkflowTest;
+import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.TestMethodOrder;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
 import testing.dsl.TestDataFactory;
 import testing.dsl.UserInterface;
+import testing.extensions.TestDataFactoryExtension;
+import testing.extensions.UserInterfaceExtension;
 
 import java.time.LocalDate;
 import java.util.UUID;
@@ -15,7 +22,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WorkflowTest
+@SpringBootTest
+@AutoConfigureMockMvc
+@ExtendWith({UserInterfaceExtension.class, TestDataFactoryExtension.class})
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class RegistrationWorkflowTest {
 
     UserInterface userInterface;
