@@ -3,7 +3,8 @@ package domain.model;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.converter.ConvertWith;
 import org.junit.jupiter.params.provider.CsvSource;
-import org.junit.jupiter.params.provider.NullAndEmptySource;
+import org.junit.jupiter.params.provider.NullSource;
+import testing.arguments_sources.BlankSource;
 import testing.converters.EmailAddressConverter;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -23,7 +24,8 @@ class AttendeeTest {
     }
 
     @ParameterizedTest
-    @NullAndEmptySource
+    @NullSource
+    @BlankSource
     void invalid_name(String name) {
         assertThatIllegalArgumentException()
                 .isThrownBy(() -> Attendee.withPersonalInformation(name, "test@email.com"))
