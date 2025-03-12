@@ -11,7 +11,7 @@ class PersistedEventRepositoryTest implements EventRepositoryTest {
     private JpaEventRepository jpaRepository;
 
     @Override
-    public EventRepository buildRepository() {
+    public EventRepository provideRepositoryImplementation() {
         return new PersistedEventRepository(jpaRepository);
     }
 

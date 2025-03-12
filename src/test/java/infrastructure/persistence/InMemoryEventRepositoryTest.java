@@ -5,7 +5,7 @@ import domain.spi.EventRepository;
 public class InMemoryEventRepositoryTest implements EventRepositoryTest {
 
     @Override
-    public EventRepository buildRepository() {
+    public EventRepository provideRepositoryImplementation() {
         return new InMemoryEventRepository();
     }
 

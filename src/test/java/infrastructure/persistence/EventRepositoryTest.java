@@ -12,12 +12,12 @@ import static testing.assertions.Assertions.assertThat;
 @ExtendWith(EventResolver.class)
 public interface EventRepositoryTest {
 
-    EventRepository buildRepository();
+    EventRepository provideRepositoryImplementation();
 
     @Test
     @DisplayName("Should save then find an event")
     default void should_save_then_find_event(Event event) {
-        EventRepository eventRepository = buildRepository();
+        EventRepository eventRepository = provideRepositoryImplementation();
         eventRepository.save(event);
 
         assertThat(eventRepository.findById(event.id()))
