@@ -5,7 +5,7 @@ import domain.spi.EventRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import testing.resolvers.EventResolver;
+import testing.extensions.EventResolver;
 
 import static testing.assertions.Assertions.assertThat;
 

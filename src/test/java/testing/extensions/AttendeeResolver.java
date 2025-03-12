@@ -1,4 +1,4 @@
-package testing.resolvers;
+package testing.extensions;
 
 import domain.model.Attendee;
 import org.junit.jupiter.api.extension.ExtensionContext;
@@ -27,11 +27,13 @@ public class AttendeeResolver extends TypeBasedParameterResolver<Attendee> {
     @Target(ElementType.PARAMETER)
     @Retention(RetentionPolicy.RUNTIME)
     public @interface Alice {
+
     }
 
     @Target(ElementType.PARAMETER)
     @Retention(RetentionPolicy.RUNTIME)
     public @interface Bob {
+
     }
 
 }

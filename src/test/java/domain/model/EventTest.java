@@ -10,15 +10,15 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
-import testing.resolvers.AttendeeResolver;
-import testing.resolvers.EventResolver;
+import testing.extensions.AttendeeResolver;
+import testing.extensions.EventResolver;
 
 import java.time.LocalDate;
 
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static testing.assertions.Assertions.assertThat;
-import static testing.resolvers.AttendeeResolver.Alice;
-import static testing.resolvers.EventResolver.Full;
+import static testing.extensions.AttendeeResolver.Alice;
+import static testing.extensions.EventResolver.Full;
 
 @ExtendWith({EventResolver.class, AttendeeResolver.class})
 class EventTest {

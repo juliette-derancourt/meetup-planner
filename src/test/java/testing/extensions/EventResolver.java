@@ -1,4 +1,4 @@
-package testing.resolvers;
+package testing.extensions;
 
 import domain.model.Attendee;
 import domain.model.Event;

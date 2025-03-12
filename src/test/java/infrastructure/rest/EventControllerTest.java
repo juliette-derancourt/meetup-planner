@@ -17,8 +17,8 @@ import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import testing.dsl.UserInterface;
-import testing.resolvers.EventResolver;
-import testing.resolvers.UserInterfaceExtension;
+import testing.extensions.EventResolver;
+import testing.extensions.UserInterfaceExtension;
 
 import java.time.LocalDate;
 import java.util.List;

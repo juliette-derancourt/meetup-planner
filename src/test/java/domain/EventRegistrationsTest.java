@@ -7,7 +7,7 @@ import infrastructure.auth.SimpleAuthorizationProvider;
 import infrastructure.persistence.InMemoryEventRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import testing.resolvers.EventResolver;
+import testing.extensions.EventResolver;
 
 import java.util.NoSuchElementException;
 import java.util.UUID;
