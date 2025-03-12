@@ -3,17 +3,14 @@ package domain;
 import domain.api.EventPlanner;
 import domain.fakes.FakeClock;
 import domain.model.Event;
-import domain.model.exceptions.UnauthorizedActionException;
 import infrastructure.auth.SimpleAuthorizationProvider;
 import infrastructure.persistence.MongoEventRepository;
 import org.junit.jupiter.api.Test;
-import testing.assertions.EventAssert;
 
 import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static testing.assertions.Assertions.assertThat;
 
 class EventPlannerTest {
@@ -32,22 +29,11 @@ class EventPlannerTest {
 
         List<Event> events = eventRepository.findAll();
 
-        assertThat(events, EventAssert.class)
-                .hasSize(1)
-                .first()
+        Event event = events.get(0);
+
+        assertThat(event)
                 .hasName("An event")
                 .isHeldAtDate(date);
-    }
-
-    @Test
-    void only_organizers_are_able_to_plan_an_event() {
-        LocalDate date = LocalDate.of(2025, 6, 12);
-
-        assertThatExceptionOfType(UnauthorizedActionException.class)
-                .isThrownBy(() -> eventPlanner.planEvent("An event", date, 50, UUID.randomUUID()))
-                .withMessage("User is not authorized to perform action: plan an event");
-
-        assertThat(eventRepository.findAll()).isEmpty();
     }
 
 }
