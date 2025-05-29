@@ -5,8 +5,8 @@ import infrastructure.rest.dto.EventRequestBody;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import testing.WorkflowTest;
+import testing.dsl.RestApi;
 import testing.dsl.TestDataFactory;
-import testing.dsl.UserInterface;
 
 import java.time.LocalDate;
 import java.util.UUID;
@@ -18,7 +18,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WorkflowTest
 class RegistrationWorkflowTest {
 
-    private UserInterface userInterface;
+    private RestApi api;
 
     private String eventId;
     private final LocalDate tomorrow = LocalDate.now().plusDays(1);
@@ -26,7 +26,7 @@ class RegistrationWorkflowTest {
     @Test
     @Order(1)
     void there_is_no_events() throws Exception {
-        userInterface.consultEventCalendar()
+        api.consultEventCalendar()
                 .andExpect(jsonPath("$.events").isEmpty());
     }
 
@@ -37,7 +37,7 @@ class RegistrationWorkflowTest {
 
         EventRequestBody event = new EventRequestBody("An event", tomorrow, 1);
 
-        eventId = userInterface.planAnEvent(event, organizerId)
+        eventId = api.planAnEvent(event, organizerId)
                 .andReturn()
                 .getResponse()
                 .getContentAsString();
@@ -46,7 +46,7 @@ class RegistrationWorkflowTest {
     @Test
     @Order(3)
     void there_is_an_event_available() throws Exception {
-        userInterface.consultEventCalendar()
+        api.consultEventCalendar()
                 .andExpect(content().json("""
                         {
                             "events": [
@@ -63,19 +63,19 @@ class RegistrationWorkflowTest {
     @Test
     @Order(4)
     void someone_registers_to_the_event() throws Exception {
-        userInterface.registerToEvent(eventId, new AttendeeRequestBody("Amy", "amy@email.com"));
+        api.registerToEvent(eventId, new AttendeeRequestBody("Amy", "amy@email.com"));
 
-        userInterface.consultEventCalendar()
+        api.consultEventCalendar()
                 .andExpect(jsonPath("$.events[0].attendees").value(1));
     }
 
     @Test
     @Order(5)
     void the_event_is_full() throws Exception {
-        userInterface.registerToEvent(eventId, new AttendeeRequestBody("Rory", "rory@email.com"))
+        api.registerToEvent(eventId, new AttendeeRequestBody("Rory", "rory@email.com"))
                 .andExpect(status().isBadRequest());
 
-        userInterface.consultEventCalendar()
+        api.consultEventCalendar()
                 .andExpect(jsonPath("$.events[0].attendees").value(1));
     }
 

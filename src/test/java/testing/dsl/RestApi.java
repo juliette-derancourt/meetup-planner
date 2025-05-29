@@ -13,12 +13,12 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 
-public class UserInterface {
+public class RestApi {
 
     private final MockMvc mockMvc;
     private final ObjectMapper objectMapper;
 
-    public UserInterface(MockMvc mockMvc, ObjectMapper objectMapper) {
+    public RestApi(MockMvc mockMvc, ObjectMapper objectMapper) {
         this.mockMvc = mockMvc;
         this.objectMapper = objectMapper;
     }

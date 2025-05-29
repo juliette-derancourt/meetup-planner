@@ -18,9 +18,9 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
-import testing.dsl.UserInterface;
+import testing.dsl.RestApi;
 import testing.extensions.EventResolver;
-import testing.extensions.UserInterfaceExtension;
+import testing.extensions.RestApiExtension;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -36,21 +36,21 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(EventController.class)
-@ExtendWith({UserInterfaceExtension.class, EventResolver.class})
+@ExtendWith({RestApiExtension.class, EventResolver.class})
 @Execution(ExecutionMode.SAME_THREAD)
 class EventControllerTest {
 
     @MockitoBean
     private EventService eventService;
 
-    private UserInterface userInterface;
+    private RestApi api;
 
     @Test
     @DisplayName("should return nothing when there is no event planned")
     void should_return_no_events() throws Exception {
         when(eventService.listEvents()).thenReturn(List.of());
 
-        userInterface.consultEventCalendar()
+        api.consultEventCalendar()
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.events").isEmpty());
     }
@@ -63,7 +63,7 @@ class EventControllerTest {
 
         EventRequestBody event = new EventRequestBody("An event", LocalDate.parse("2020-10-20"), 1);
 
-        userInterface.planAnEvent(event, UUID.randomUUID())
+        api.planAnEvent(event, UUID.randomUUID())
                 .andExpect(status().isCreated())
                 .andExpect(content().string(eventId));
     }
@@ -83,7 +83,7 @@ class EventControllerTest {
         @Test
         @DisplayName("should return the event")
         void should_return_event() throws Exception {
-            String response = userInterface.consultEventCalendar()
+            String response = api.consultEventCalendar()
                     .andExpect(status().isOk())
                     .andReturn()
                     .getResponse().getContentAsString();
@@ -95,7 +95,7 @@ class EventControllerTest {
         @DisplayName("should be able to register to the event")
         void should_register_to_event() throws Exception {
             AttendeeRequestBody attendee = new AttendeeRequestBody("Amy", "amy@email.com");
-            userInterface.registerToEvent(eventId, attendee)
+            api.registerToEvent(eventId, attendee)
                     .andExpect(status().isOk());
         }
 
@@ -110,7 +110,7 @@ class EventControllerTest {
             doThrow(exception).when(eventService).registerTo(any(), any(), any());
 
             AttendeeRequestBody attendee = new AttendeeRequestBody("Amy", "amy@email.com");
-            userInterface.registerToEvent(eventId, attendee)
+            api.registerToEvent(eventId, attendee)
                     .andExpect(status().isBadRequest());
         }
 
