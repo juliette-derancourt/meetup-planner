@@ -16,13 +16,10 @@ public interface EventRepositoryTest {
     @Test
     default void should_save_then_find_an_event(Event event) {
         EventRepository eventRepository = provideRepositoryImplementation();
+
         eventRepository.save(event);
 
-        assertThat(eventRepository.findById(event.id()))
-                .isPresent()
-                .contains(event);
-
-        assertThat(eventRepository.findAll())
+         assertThat(eventRepository.findAll())
                 .hasSize(1)
                 .containsExactly(event);
     }

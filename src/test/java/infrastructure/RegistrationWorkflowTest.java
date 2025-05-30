@@ -2,11 +2,18 @@ package infrastructure;
 
 import infrastructure.rest.dto.AttendeeRequestBody;
 import infrastructure.rest.dto.EventRequestBody;
+import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
-import testing.WorkflowTest;
+import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.TestMethodOrder;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
 import testing.dsl.RestApi;
 import testing.dsl.TestDataFactory;
+import testing.extensions.RestApiExtension;
+import testing.extensions.TestDataFactoryExtension;
 
 import java.time.LocalDate;
 import java.util.UUID;
@@ -15,10 +22,15 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WorkflowTest
+@SpringBootTest
+@AutoConfigureMockMvc
+@ExtendWith({RestApiExtension.class, TestDataFactoryExtension.class})
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class RegistrationWorkflowTest {
 
-    private RestApi api;
+    RestApi api;
+    TestDataFactory testDataFactory;
 
     private String eventId;
     private final LocalDate tomorrow = LocalDate.now().plusDays(1);
@@ -32,7 +44,7 @@ class RegistrationWorkflowTest {
 
     @Test
     @Order(2)
-    void an_organizer_plans_an_event(TestDataFactory testDataFactory) throws Exception {
+    void an_organizer_plans_an_event() throws Exception {
         UUID organizerId = testDataFactory.givenAnOrganizer("ee8b1e44-b0e1-4cc0-9d6e-b24ce343111e");
 
         EventRequestBody event = new EventRequestBody("An event", tomorrow, 1);
