@@ -1,5 +1,6 @@
 package domain.model;
 
+import domain.model.exceptions.InvalidEmailFormatException;
 import net.datafaker.Faker;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -12,15 +13,13 @@ import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Named.named;
 import static org.junit.jupiter.params.provider.Arguments.arguments;
 
 class AttendeeTest {
 
     @ParameterizedTest
-    @CsvSource({
-            "Amy, amy@email.com",
-            "Rory, rory@email.com",
-    })
     @MethodSource("attendees")
     void should_create_attendee(String name, EmailAddress email) {
         Attendee attendee = new Attendee(name, email);
@@ -44,8 +43,41 @@ class AttendeeTest {
     @BlankSource
     void invalid_name(String name) {
         assertThatIllegalArgumentException()
-                .isThrownBy(() -> Attendee.withPersonalInformation(name, "test@email.com"))
+                .isThrownBy(() -> Attendee.withPersonalInformation(name, "amy@email.com"))
                 .withMessage("Attendee name cannot be empty");
+    }
+
+    @ParameterizedTest(name = "throws {1} when it contains {0}")
+    @MethodSource
+    void invalid_email(String email, Class<?> expectedException, String message) {
+        assertThatThrownBy(() -> Attendee.withPersonalInformation("Amy", email))
+                .isInstanceOf(expectedException)
+                .hasMessage(message);
+    }
+
+    private static Stream<Arguments> invalid_email() {
+        return Stream.of(
+                arguments(
+                        named("no @", "test.email.com"),
+                        named("InvalidEmailFormat", InvalidEmailFormatException.class),
+                        "Invalid email address: test.email.com"
+                ),
+                arguments(
+                        named("no @ and no extension", "hello"),
+                        named("InvalidEmailFormat", InvalidEmailFormatException.class),
+                        "Invalid email address: hello"
+                ),
+                arguments(
+                        named("no extension", "contact@test"),
+                        named("InvalidEmailFormat", InvalidEmailFormatException.class),
+                        "Invalid email address: contact@test"
+                ),
+                arguments(
+                        named("no characters", "  "),
+                        named("IllegalArgument", IllegalArgumentException.class),
+                        "Email is null or empty"
+                )
+        );
     }
 
 }

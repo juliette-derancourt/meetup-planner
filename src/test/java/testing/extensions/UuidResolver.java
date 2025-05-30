@@ -11,8 +11,7 @@ public class UuidResolver implements ParameterResolver {
 
     @Override
     public boolean supportsParameter(ParameterContext parameterContext, ExtensionContext extensionContext) throws ParameterResolutionException {
-        return parameterContext.isAnnotated(Random.class) &&
-                parameterContext.getParameter().getType() == UUID.class;
+        return parameterContext.getParameter().getType() == UUID.class;
     }
 
     @Override

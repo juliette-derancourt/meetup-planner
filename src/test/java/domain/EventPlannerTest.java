@@ -7,7 +7,8 @@ import domain.model.exceptions.UnauthorizedActionException;
 import infrastructure.auth.SimpleAuthorizationProvider;
 import infrastructure.persistence.InMemoryEventRepository;
 import org.junit.jupiter.api.Test;
-import testing.extensions.Random;
+import org.junit.jupiter.api.extension.ExtendWith;
+import testing.extensions.UuidResolver;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -17,6 +18,7 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static testing.assertions.Assertions.assertThat;
 import static testing.assertions.EventAssert.EVENT;
 
+@ExtendWith(UuidResolver.class)
 class EventPlannerTest {
 
     private final InMemoryEventRepository eventRepository = new InMemoryEventRepository();
@@ -24,7 +26,7 @@ class EventPlannerTest {
     private final EventPlanner eventPlanner = new EventService(eventRepository, authorizationProvider, new FakeClock());
 
     @Test
-    void should_plan_a_new_event(@Random UUID organizerId) {
+    void should_plan_a_new_event(UUID organizerId) {
         authorizationProvider.addOrganizer(organizerId);
 
         LocalDate date = LocalDate.of(2025, 6, 12);
