@@ -43,7 +43,7 @@ class EventControllerTest {
     @MockitoBean
     private EventService eventService;
 
-    private RestApi api;
+    RestApi api;
 
     @Test
     @DisplayName("should return nothing when there is no event planned")

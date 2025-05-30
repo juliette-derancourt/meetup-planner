@@ -8,4 +8,14 @@ public class Assertions extends org.assertj.core.api.Assertions {
         return new EventAssert(event);
     }
 
+    /*
+
+    public static AttendeeAssert assertThat(Attendee attendee) {
+        return new AttendeeAssert(attendee);
+    }
+
+    ...
+
+    */
+
 }

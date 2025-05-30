@@ -18,7 +18,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WorkflowTest
 class RegistrationWorkflowTest {
 
-    private RestApi api;
+    RestApi api;
 
     private String eventId;
     private final LocalDate tomorrow = LocalDate.now().plusDays(1);
