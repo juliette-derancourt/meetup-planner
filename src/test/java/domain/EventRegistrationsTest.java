@@ -14,6 +14,7 @@ import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static testing.assertions.Assertions.assertThat;
+import static testing.extensions.UuidResolver.Random;
 
 @ExtendWith(EventResolver.class)
 class EventRegistrationsTest {
@@ -36,9 +37,7 @@ class EventRegistrationsTest {
     }
 
     @Test
-    void should_not_register_to_an_unknown_event() {
-        UUID eventId = UUID.randomUUID();
-
+    void should_not_register_to_an_unknown_event(@Random UUID eventId) {
         assertThatExceptionOfType(NoSuchElementException.class)
                 .isThrownBy(() -> eventRegistrations.registerTo(eventId, "Donna", "donna@email.com"))
                 .withMessageMatching("Event with id .+ not found");

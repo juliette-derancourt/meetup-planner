@@ -15,6 +15,7 @@ import java.util.UUID;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static testing.assertions.Assertions.assertThat;
 import static testing.assertions.EventAssert.EVENT;
+import static testing.extensions.UuidResolver.Random;
 
 class EventPlannerTest {
 
@@ -23,8 +24,7 @@ class EventPlannerTest {
     private final EventPlanner eventPlanner = new EventService(eventRepository, authorizationProvider, new FakeClock());
 
     @Test
-    void should_plan_a_new_event() {
-        UUID organizerId = UUID.fromString("02056bba-9ca0-4fb5-8287-59ee980e8644");
+    void should_plan_a_new_event(@Random UUID organizerId) {
         authorizationProvider.addOrganizer(organizerId);
 
         LocalDate date = LocalDate.of(2025, 6, 12);
