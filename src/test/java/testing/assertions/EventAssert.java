@@ -3,6 +3,7 @@ package testing.assertions;
 import domain.model.Attendee;
 import domain.model.Event;
 import org.assertj.core.api.AbstractAssert;
+import org.assertj.core.api.InstanceOfAssertFactory;
 
 import java.time.LocalDate;
 
@@ -13,6 +14,9 @@ import java.time.LocalDate;
  */
 @SuppressWarnings("UnusedReturnValue")
 public class EventAssert extends AbstractAssert<EventAssert, Event> {
+
+    public static final InstanceOfAssertFactory<Event, EventAssert> EVENT =
+            new InstanceOfAssertFactory<>(Event.class, EventAssert::new);
 
     public EventAssert(Event event) {
         super(event, EventAssert.class);

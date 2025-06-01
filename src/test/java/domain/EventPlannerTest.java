@@ -7,7 +7,6 @@ import domain.model.exceptions.UnauthorizedActionException;
 import infrastructure.auth.SimpleAuthorizationProvider;
 import infrastructure.persistence.InMemoryEventRepository;
 import org.junit.jupiter.api.Test;
-import testing.assertions.EventAssert;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -15,6 +14,7 @@ import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static testing.assertions.Assertions.assertThat;
+import static testing.assertions.EventAssert.EVENT;
 
 class EventPlannerTest {
 
@@ -32,9 +32,9 @@ class EventPlannerTest {
 
         List<Event> events = eventRepository.findAll();
 
-        assertThat(events, EventAssert.class)
+        assertThat(events)
                 .hasSize(1)
-                .first()
+                .first(EVENT)
                 .hasName("An event")
                 .isHeldAtDate(date);
     }
