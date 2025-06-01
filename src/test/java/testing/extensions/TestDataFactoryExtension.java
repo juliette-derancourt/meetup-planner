@@ -19,7 +19,7 @@ public class TestDataFactoryExtension
     private final String key = "testDataFactory";
 
     @Override
-    public void postProcessTestInstance(Object testInstance, ExtensionContext context) throws Exception {
+    public void postProcessTestInstance(Object testInstance, ExtensionContext context) {
         TestDataFactory testDataFactory = buildTestDataFactory(context);
         setFieldInTestClass(testInstance, testDataFactory);
 
