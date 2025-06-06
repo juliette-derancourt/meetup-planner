@@ -7,6 +7,7 @@ import domain.model.exceptions.UnauthorizedActionException;
 import infrastructure.auth.SimpleAuthorizationProvider;
 import infrastructure.persistence.InMemoryEventRepository;
 import org.junit.jupiter.api.Test;
+import testing.extensions.Random;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -15,7 +16,6 @@ import java.util.UUID;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static testing.assertions.Assertions.assertThat;
 import static testing.assertions.EventAssert.EVENT;
-import static testing.extensions.UuidResolver.Random;
 
 class EventPlannerTest {
 

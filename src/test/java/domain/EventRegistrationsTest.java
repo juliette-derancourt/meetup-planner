@@ -8,13 +8,13 @@ import infrastructure.persistence.InMemoryEventRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import testing.extensions.EventResolver;
+import testing.extensions.Random;
 
 import java.util.NoSuchElementException;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static testing.assertions.Assertions.assertThat;
-import static testing.extensions.UuidResolver.Random;
 
 @ExtendWith(EventResolver.class)
 class EventRegistrationsTest {
