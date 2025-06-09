@@ -3,8 +3,9 @@ package domain.model;
 import domain.model.exceptions.InvalidEmailFormatException;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.ArgumentsSource;
 import org.junit.jupiter.params.provider.MethodSource;
-import org.junit.jupiter.params.provider.ValueSource;
+import testing.arguments_sources.EmailArgumentsProvider;
 
 import java.util.stream.Stream;
 
@@ -16,11 +17,7 @@ import static org.junit.jupiter.params.provider.Arguments.arguments;
 class EmailAddressTest {
 
     @ParameterizedTest(name = "`{0}` is valid")
-    @ValueSource(strings = {
-            "test@email.com",
-            "hello@me.io",
-            "contact@test.fr",
-    })
+    @ArgumentsSource(EmailArgumentsProvider.class)
     void should_accept_a_valid_email(String email) {
         EmailAddress emailAddress = EmailAddress.of(email);
         assertThat(emailAddress.value()).isEqualTo(email);
