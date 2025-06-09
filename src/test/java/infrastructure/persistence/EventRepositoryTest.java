@@ -2,7 +2,6 @@ package infrastructure.persistence;
 
 import domain.model.Event;
 import domain.spi.EventRepository;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import testing.extensions.EventResolver;
@@ -15,8 +14,7 @@ public interface EventRepositoryTest {
     EventRepository provideRepositoryImplementation();
 
     @Test
-    @DisplayName("Should save then find an event")
-    default void should_save_then_find_event(Event event) {
+    default void should_save_then_find_an_event(Event event) {
         EventRepository eventRepository = provideRepositoryImplementation();
         eventRepository.save(event);
 
