@@ -1,5 +1,6 @@
 package infrastructure.rest;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import domain.EventService;
 import domain.model.Event;
 import domain.model.exceptions.AttendeeAlreadyRegisteredException;
@@ -16,11 +17,12 @@ import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
+import org.springframework.test.web.servlet.MockMvc;
 import testing.dsl.RestApi;
 import testing.extensions.EventResolver;
-import testing.extensions.RestApiExtension;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -36,14 +38,25 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(EventController.class)
-@ExtendWith({RestApiExtension.class, EventResolver.class})
+@ExtendWith({EventResolver.class})
 @Execution(ExecutionMode.SAME_THREAD)
 class EventControllerTest {
 
     @MockitoBean
     private EventService eventService;
 
+    @Autowired
+    private MockMvc mockMvc;
+
+    @Autowired
+    private ObjectMapper objectMapper;
+
     RestApi api;
+
+    @BeforeEach
+    void setUp() {
+        api = new RestApi(mockMvc, objectMapper);
+    }
 
     @Test
     @DisplayName("should return nothing when there is no event planned")
