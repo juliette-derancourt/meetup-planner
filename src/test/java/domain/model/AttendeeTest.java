@@ -2,13 +2,11 @@ package domain.model;
 
 import net.datafaker.Faker;
 import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.converter.ConvertWith;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.NullSource;
 import testing.arguments_sources.BlankSource;
-import testing.converters.EmailAddressConverter;
 
 import java.util.stream.Stream;
 
@@ -24,7 +22,7 @@ class AttendeeTest {
             "Rory, rory@email.com",
     })
     @MethodSource("attendees")
-    void should_create_attendee(String name, @ConvertWith(EmailAddressConverter.class) EmailAddress email) {
+    void should_create_attendee(String name, EmailAddress email) {
         Attendee attendee = new Attendee(name, email);
 
         assertThat(attendee.name()).isEqualTo(name);
