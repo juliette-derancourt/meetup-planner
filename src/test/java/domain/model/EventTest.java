@@ -4,12 +4,12 @@ import domain.fakes.FakeClock;
 import domain.model.exceptions.AttendeeAlreadyRegisteredException;
 import domain.model.exceptions.EventAlreadyFullException;
 import domain.model.exceptions.EventIsOverException;
-import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import testing.extensions.AttendeeResolver;
+import testing.extensions.DateResolver;
 import testing.extensions.EventResolver;
 
 import java.time.LocalDate;
@@ -20,35 +20,28 @@ import static testing.assertions.Assertions.assertThat;
 import static testing.extensions.AttendeeResolver.Alice;
 import static testing.extensions.EventResolver.Full;
 
-@ExtendWith({EventResolver.class, AttendeeResolver.class})
+@ExtendWith({EventResolver.class, AttendeeResolver.class, DateResolver.class})
 class EventTest {
 
-    @Nested
-    class CreationTests {
+    private final FakeClock clock = new FakeClock();
 
-        private final LocalDate date = LocalDate.of(2025, 2, 1);
+    @Test
+    void should_create_an_event(LocalDate date) {
+        Event event = Event.create("Event name", date, 10);
 
-        @Test
-        void should_create_an_event() {
-            Event event = Event.create("Event name", date, 10);
-
-            assertThat(event).hasAnId()
-                    .hasName("Event name")
-                    .canBeAttendedBy(10)
-                    .isHeldAtDate(date);
-        }
-
-        @ParameterizedTest
-        @ValueSource(ints = {-10, 0})
-        void should_not_create_an_event_with_no_capacity(int venueCapacity) {
-            assertThatIllegalArgumentException()
-                    .isThrownBy(() -> Event.create("Event name", date, venueCapacity))
-                    .withMessage("Venue capacity must be greater than zero");
-        }
-
+        assertThat(event).hasAnId()
+                .hasName("Event name")
+                .canBeAttendedBy(10)
+                .isHeldAtDate(date);
     }
 
-    private final FakeClock clock = new FakeClock();
+    @ParameterizedTest
+    @ValueSource(ints = {-10, 0})
+    void should_not_create_an_event_with_no_capacity(int venueCapacity, LocalDate date) {
+        assertThatIllegalArgumentException()
+                .isThrownBy(() -> Event.create("Event name", date, venueCapacity))
+                .withMessage("Venue capacity must be greater than zero");
+    }
 
     @Test
     void should_register_an_attendee(Event event, Attendee attendee) {
