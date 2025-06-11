@@ -15,10 +15,10 @@ public class AttendeeResolver extends TypeBasedParameterResolver<Attendee> {
 
     @Override
     public Attendee resolveParameter(ParameterContext parameterContext, ExtensionContext extensionContext) throws ParameterResolutionException {
-        if (parameterContext.findAnnotation(Alice.class).isPresent()) {
+        if (parameterContext.isAnnotated(Alice.class)) {
             return Attendee.withPersonalInformation("Alice", "alice@email.com");
         }
-        if (parameterContext.findAnnotation(Bob.class).isPresent()) {
+        if (parameterContext.isAnnotated(Bob.class)) {
             return Attendee.withPersonalInformation("Bob", "bob@email.com");
         }
         return Attendee.withPersonalInformation("Chloé", "chloe@email.com");

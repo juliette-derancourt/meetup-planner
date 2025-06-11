@@ -20,7 +20,7 @@ public class EventResolver extends TypeBasedParameterResolver<Event> {
 
     @Override
     public Event resolveParameter(ParameterContext parameterContext, ExtensionContext extensionContext) throws ParameterResolutionException {
-        if (parameterContext.findAnnotation(Full.class).isPresent()) {
+        if (parameterContext.isAnnotated(Full.class)) {
             return buildFullEvent();
         }
 
