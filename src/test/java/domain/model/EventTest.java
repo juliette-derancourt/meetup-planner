@@ -10,9 +10,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
-import static testing.assertions.Assertions.assertThat;
 
 class EventTest {
 
@@ -23,17 +23,31 @@ class EventTest {
         LocalDate date = LocalDate.of(2025, 2, 1);
         Event event = Event.create("Event name", date, 10);
 
-        assertThat(event).hasAnId()
-                .hasName("Event name")
-                .canBeAttendedBy(10)
-                .isHeldAtDate(date);
+        // assertNotNull(event.id());
+        assertThat(event.id()).isNotNull();
+
+        // assertEquals("Event name", event.name());
+        assertThat(event.name()).isEqualTo("Event name");
+
+        // assertEquals(10, event.registrations().venueCapacity());
+        assertThat(event.registrations().venueCapacity()).isEqualTo(10);
+
+        // assertEquals(date, event.date());
+        assertThat(event.date()).isEqualTo(date);
     }
 
     @Test
     void should_not_create_an_event_with_no_capacity() {
         LocalDate date = LocalDate.of(2025, 2, 1);
 
-        assertThatIllegalArgumentException()
+        /*
+        assertThrows(
+                IllegalArgumentException.class,
+                () -> Event.create("Event name", date, 0),
+                "Venue capacity must be greater than zero"
+        );
+         */
+        assertThatExceptionOfType(IllegalArgumentException.class)
                 .isThrownBy(() -> Event.create("Event name", date, 0))
                 .withMessage("Venue capacity must be greater than zero");
     }
@@ -61,7 +75,7 @@ class EventTest {
         Attendee newAttendee = Attendee.withPersonalInformation("An attendee", "test@email.com");
         event.register(newAttendee, clock);
 
-        assertThat(event).isAttendedBy(newAttendee);
+        assertThat(event.registrations().isRegistered(newAttendee)).isTrue();
     }
 
     @Test
