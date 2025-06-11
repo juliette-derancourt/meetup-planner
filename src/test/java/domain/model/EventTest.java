@@ -10,9 +10,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class EventTest {
 
@@ -23,42 +24,32 @@ class EventTest {
         LocalDate date = LocalDate.of(2025, 2, 1);
         Event event = Event.create("Event name", date, 10);
 
-        // assertNotNull(event.id());
-        assertThat(event.id()).isNotNull();
-
-        // assertEquals("Event name", event.name());
-        assertThat(event.name()).isEqualTo("Event name");
-
-        // assertEquals(10, event.registrations().venueCapacity());
-        assertThat(event.registrations().venueCapacity()).isEqualTo(10);
-
-        // assertEquals(date, event.date());
-        assertThat(event.date()).isEqualTo(date);
+        assertNotNull(event.id());
+        assertEquals("Event name", event.name());
+        assertEquals(10, event.registrations().venueCapacity());
+        assertEquals(date, event.date());
     }
 
     @Test
     void should_not_create_an_event_with_no_capacity() {
         LocalDate date = LocalDate.of(2025, 2, 1);
 
-        /*
         assertThrows(
                 IllegalArgumentException.class,
                 () -> Event.create("Event name", date, 0),
                 "Venue capacity must be greater than zero"
         );
-         */
-        assertThatExceptionOfType(IllegalArgumentException.class)
-                .isThrownBy(() -> Event.create("Event name", date, 0))
-                .withMessage("Venue capacity must be greater than zero");
     }
 
     @Test
     void should_not_create_an_event_with_negative_capacity() {
         LocalDate date = LocalDate.of(2025, 2, 1);
 
-        assertThatIllegalArgumentException()
-                .isThrownBy(() -> Event.create("Event name", date, -10))
-                .withMessage("Venue capacity must be greater than zero");
+        assertThrows(
+                IllegalArgumentException.class,
+                () -> Event.create("Event name", date, -10),
+                "Venue capacity must be greater than zero"
+        );
     }
 
     @Test
@@ -75,7 +66,7 @@ class EventTest {
         Attendee newAttendee = Attendee.withPersonalInformation("An attendee", "test@email.com");
         event.register(newAttendee, clock);
 
-        assertThat(event.registrations().isRegistered(newAttendee)).isTrue();
+        assertTrue(event.registrations().isRegistered(newAttendee));
     }
 
     @Test
@@ -94,8 +85,10 @@ class EventTest {
 
         Attendee newAttendee = Attendee.withPersonalInformation("Attendee #3", "third@email.com");
 
-        assertThatExceptionOfType(EventAlreadyFullException.class)
-                .isThrownBy(() -> event.register(newAttendee, clock));
+        assertThrows(
+                EventAlreadyFullException.class,
+                () -> event.register(newAttendee, clock)
+        );
     }
 
     @Test
@@ -115,8 +108,10 @@ class EventTest {
 
         Attendee newAttendee = Attendee.withPersonalInformation("Attendee #2", "second@email.com");
 
-        assertThatExceptionOfType(EventIsOverException.class)
-                .isThrownBy(() -> event.register(newAttendee, clock));
+        assertThrows(
+                EventIsOverException.class,
+                () -> event.register(newAttendee, clock)
+        );
     }
 
 }
