@@ -4,19 +4,16 @@ import domain.fakes.FakeClock;
 import domain.model.exceptions.EventAlreadyFullException;
 import domain.model.exceptions.EventIsOverException;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.ValueSource;
-import testing.extensions.EventResolver;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static testing.assertions.Assertions.assertThat;
-import static testing.extensions.EventResolver.Full;
 
-@ExtendWith(EventResolver.class)
 class EventTest {
 
     private final FakeClock clock = new FakeClock();
@@ -32,41 +29,80 @@ class EventTest {
                 .isHeldAtDate(date);
     }
 
-    @ParameterizedTest
-    @ValueSource(ints = {-10, 0})
-    void should_not_create_an_event_with_no_capacity(int venueCapacity) {
+    @Test
+    void should_not_create_an_event_with_no_capacity() {
         LocalDate date = LocalDate.of(2025, 2, 1);
 
         assertThatIllegalArgumentException()
-                .isThrownBy(() -> Event.create("Event name", date, venueCapacity))
+                .isThrownBy(() -> Event.create("Event name", date, 0))
                 .withMessage("Venue capacity must be greater than zero");
     }
 
     @Test
-    void should_register_an_attendee(Event event) {
-        Attendee attendee = Attendee.withPersonalInformation("An attendee", "test@email.com");
+    void should_not_create_an_event_with_negative_capacity() {
+        LocalDate date = LocalDate.of(2025, 2, 1);
 
-        event.register(attendee, clock);
-
-        assertThat(event).isAttendedBy(attendee);
+        assertThatIllegalArgumentException()
+                .isThrownBy(() -> Event.create("Event name", date, -10))
+                .withMessage("Venue capacity must be greater than zero");
     }
 
     @Test
-    void should_not_register_someone_when_the_event_is_full(@Full Event event) {
-        Attendee attendee = Attendee.withPersonalInformation("An attendee", "test@email.com");
+    void should_register_an_attendee() {
+        Event event = new Event(
+                UUID.fromString("182754a6-939b-41a2-a610-2470c01d755b"),
+                "An event",
+                LocalDate.of(2025, 2, 2),
+                new Registrations(
+                        2,
+                        new ArrayList<>()
+                ));
+
+        Attendee newAttendee = Attendee.withPersonalInformation("An attendee", "test@email.com");
+        event.register(newAttendee, clock);
+
+        assertThat(event).isAttendedBy(newAttendee);
+    }
+
+    @Test
+    void should_not_register_someone_when_the_event_is_full() {
+        Event event = new Event(
+                UUID.fromString("182754a6-939b-41a2-a610-2470c01d755b"),
+                "An event",
+                LocalDate.of(2025, 2, 2),
+                new Registrations(
+                        2,
+                        List.of(
+                                Attendee.withPersonalInformation("Attendee #1", "first@email.com"),
+                                Attendee.withPersonalInformation("Attendee #2", "second@email.com")
+                        )
+                ));
+
+        Attendee newAttendee = Attendee.withPersonalInformation("Attendee #3", "third@email.com");
 
         assertThatExceptionOfType(EventAlreadyFullException.class)
-                .isThrownBy(() -> event.register(attendee, clock));
+                .isThrownBy(() -> event.register(newAttendee, clock));
     }
 
     @Test
-    void should_not_register_when_the_event_is_already_over(Event event) {
-        clock.setDate(event.date().plusDays(1));
+    void should_not_register_when_the_event_is_already_over() {
+        clock.setDate(LocalDate.MAX);
 
-        Attendee attendee = Attendee.withPersonalInformation("An attendee", "test@email.com");
+        Event event = new Event(
+                UUID.fromString("182754a6-939b-41a2-a610-2470c01d755b"),
+                "An event",
+                LocalDate.of(2025, 2, 2),
+                new Registrations(
+                        10,
+                        List.of(
+                                Attendee.withPersonalInformation("Attendee #1", "first@email.com")
+                        )
+                ));
+
+        Attendee newAttendee = Attendee.withPersonalInformation("Attendee #2", "second@email.com");
 
         assertThatExceptionOfType(EventIsOverException.class)
-                .isThrownBy(() -> event.register(attendee, clock));
+                .isThrownBy(() -> event.register(newAttendee, clock));
     }
 
 }
