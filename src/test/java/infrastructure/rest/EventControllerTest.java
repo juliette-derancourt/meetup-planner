@@ -12,12 +12,15 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
-import testing.ControllerTest;
 import testing.dsl.RestApi;
 import testing.extensions.EventResolver;
+import testing.extensions.RestApiExtension;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -32,8 +35,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@ControllerTest
-@ExtendWith(EventResolver.class)
+@WebMvcTest
+@ExtendWith({RestApiExtension.class, EventResolver.class})
+@Execution(ExecutionMode.SAME_THREAD)
 class EventControllerTest {
 
     @MockitoBean
